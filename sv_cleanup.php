@@ -16,17 +16,14 @@
 			$this->path								= $path;
 			$this->url								= $url;
 			$this->name								= get_class($this);
-			
+		}
+		public function init(){
 			add_action('wp_head', array($this, 'wp_start'), 1);
 			add_action('wp_footer', array($this, 'wp_end'), 9999999);
-			
+
 			// WP media
 			add_action('wp_print_styles', array($this, 'wp_print_styles'), 100);
 			add_action('wp_print_footer_scripts', array($this, 'wp_print_styles'), 1);
-			
-			$this->init();
-		}
-		public function init(){
 			remove_action('wp_print_styles', 'gforms_css'); // remove gravity form styles
 			remove_action('wp_print_styles', 'print_emoji_styles'); // remove emoji
 			remove_action('wp_head', 'rest_output_link_wp_head', 10); // Remove api.w.org REST API from WordPress header
