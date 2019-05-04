@@ -46,6 +46,7 @@ class sv_cleanup extends init {
 		$output				= $this->remove_type_attr($this->add_alt_tags($output));
 		ob_end_clean();
 		echo $output;
+		ob_start();
 	}
 
 	public function remove_type_attr($input){
