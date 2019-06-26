@@ -15,7 +15,7 @@ class sv_cleanup extends init {
 	public function init() {
 		// Module Info
 		$this->set_module_title( 'SV Cleanup' );
-		$this->set_module_desc( __( 'Improve some WordPress Standards', $this->get_module_name() ) );
+		$this->set_module_desc( __( 'Improve some WordPress Standards', 'straightvisions_100' ) );
 		
 		// Section Info
 		$this->set_section_title( __( 'Cleanup', 'straightvisions_100' ) )
@@ -45,7 +45,8 @@ class sv_cleanup extends init {
 		add_action('wp_footer', array($this, 'wp_end'), 9999999);
 		
 		// lazy load attached CSS
-		add_filter('rocket_buffer', function($buffer){ return str_replace('rel="stylesheet"', 'rel="stylesheet" media="none" onload="if(media!=\'all\')media=\'all\'"', $buffer); }, 999999);
+		// @todo: make this an option
+		//add_filter('rocket_buffer', function($buffer){ return str_replace('rel="stylesheet"', 'rel="stylesheet" media="none" onload="if(media!=\'all\')media=\'all\'"', $buffer); }, 999999);
 	}
 	public function jquery_migrate($scripts){
 		if ( ! is_admin() && ! empty( $scripts->registered['jquery'] ) ) {
@@ -160,14 +161,17 @@ class sv_cleanup extends init {
 	public function wp_print_styles(){
 		if(wp_style_is('wp-mediaelement')){
 			wp_dequeue_style('wp-mediaelement');
-			echo '<style data-sv_100_module="'.$this->get_module_name().'_wp_mediaelement">';
-			ob_start();
-			include(ABSPATH.WPINC.'/js/mediaelement/mediaelementplayer-legacy.min.css');
-			include(ABSPATH.WPINC.'/js/mediaelement/wp-mediaelement.min.css');
-			$css					= ob_get_contents();
-			ob_end_clean();
-			echo str_replace('mejs-controls.svg',includes_url('js/mediaelement/mejs-controls.svg'), $css);
-			echo '</style>';
+			
+			add_action('wp_enqueue_style', function(){
+				ob_start();
+				include(ABSPATH.WPINC.'/js/mediaelement/mediaelementplayer-legacy.min.css');
+				include(ABSPATH.WPINC.'/js/mediaelement/wp-mediaelement.min.css');
+				$css					= ob_get_contents();
+				ob_end_clean();
+				$css =  str_replace('mejs-controls.svg',includes_url('js/mediaelement/mejs-controls.svg'), $css);
+				
+				wp_add_inline_style($this->get_module('sv_common')->get_scripts()['frontend']->get_handle(), $css);
+			});
 		}
 	}
 }
