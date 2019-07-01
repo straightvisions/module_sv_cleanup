@@ -4,18 +4,18 @@ namespace sv100_companion;
 /**
  * @version         1.00
  * @author			straightvisions GmbH
- * @package			sv100
+ * @package			sv100_companion
  * @copyright		2017 straightvisions GmbH
  * @link			https://straightvisions.com
  * @since			1.0
  * @license			See license.txt or https://straightvisions.com
  */
 
-class sv_cleanup extends init {
+class sv_cleanup extends modules {
 	public function init() {
 		// Section Info
-		$this->set_section_title( __( 'Cleanup', 'sv100' ) )
-			 ->set_section_desc( __( 'Improve some WordPress Standards', 'sv100' ) )
+		$this->set_section_title( __( 'Cleanup', 'sv100_companion' ) )
+			 ->set_section_desc( __( 'Improve some WordPress Standards', 'sv100_companion' ) )
 			 ->set_section_type( 'settings' );
 		
 		$this->get_root()->add_section($this);
@@ -64,50 +64,50 @@ class sv_cleanup extends init {
 		$this->s['jquery_migrate'] =
 			$this->get_setting()
 				 ->set_ID( 'jquery_migrate' )
-				 ->set_title( __( 'Disable jQuery Migrate', 'sv100' ) )
-				 ->set_description( __( 'In most cases, you will not need jQuery-Migrate. Disabling this script will reduce pageload and improve Pagespeed. Check for Javascript-Errors in Frontend after activating this.', 'sv100' ) )
+				 ->set_title( __( 'Disable jQuery Migrate', 'sv100_companion' ) )
+				 ->set_description( __( 'In most cases, you will not need jQuery-Migrate. Disabling this script will reduce pageload and improve Pagespeed. Check for Javascript-Errors in Frontend after activating this.', 'sv100_companion' ) )
 				 ->load_type( 'checkbox' );
 		
 		$this->s['meta_data'] =
 			$this->get_setting()
 				 ->set_ID( 'meta_data' )
-				 ->set_title( __( 'Remove non-critical meta data', 'sv100' ) )
-				 ->set_description( __( 'Removes some lines of HTML-Meta-Data which are not critical for your site, but saves some byte of code in the frontend: rest_output_link_wp_head, wp_oembed_add_discovery_links, rsd_link, wlwmanifest_link, wp_shortlink_wp_head, wp_generator', 'sv100' ) )
+				 ->set_title( __( 'Remove non-critical meta data', 'sv100_companion' ) )
+				 ->set_description( __( 'Removes some lines of HTML-Meta-Data which are not critical for your site, but saves some byte of code in the frontend: rest_output_link_wp_head, wp_oembed_add_discovery_links, rsd_link, wlwmanifest_link, wp_shortlink_wp_head, wp_generator', 'sv100_companion' ) )
 				 ->load_type( 'checkbox' );
 		
 		$this->s['emoji_styles'] =
 			$this->get_setting()
 				 ->set_ID( 'emoji_styles' )
-				 ->set_title( __( 'Removes Emoji Styles', 'sv100' ) )
-				 ->set_description( __( 'Instead of loading those styles from WP, default browser emojis will be displayed', 'sv100' ) )
+				 ->set_title( __( 'Removes Emoji Styles', 'sv100_companion' ) )
+				 ->set_description( __( 'Instead of loading those styles from WP, default browser emojis will be displayed', 'sv100_companion' ) )
 				 ->load_type( 'checkbox' );
 		
 		$this->s['wp_media'] =
 			$this->get_setting()
 				 ->set_ID( 'wp_media' )
-				 ->set_title( __( 'Load WP Media Styles inline', 'sv100' ) )
-				 ->set_description( __( 'To optimize your Pagespeed Score, you may need to load WP Media Styles inline if loaded. Activate this, if Pagespeed Test Tool says external WP Media Styles are renderblocking.', 'sv100' ) )
+				 ->set_title( __( 'Load WP Media Styles inline', 'sv100_companion' ) )
+				 ->set_description( __( 'To optimize your Pagespeed Score, you may need to load WP Media Styles inline if loaded. Activate this, if Pagespeed Test Tool says external WP Media Styles are renderblocking.', 'sv100_companion' ) )
 				 ->load_type( 'checkbox' );
 		
 		$this->s['wp_media'] =
 			$this->get_setting()
 				 ->set_ID( 'wp_media' )
-				 ->set_title( __( 'Load WP Media Styles inline', 'sv100' ) )
-				 ->set_description( __( 'To optimize your Pagespeed Score, you may need to load WP Media Styles inline if loaded. Activate this, if Pagespeed Test Tool says external WP Media Styles are renderblocking.', 'sv100' ) )
+				 ->set_title( __( 'Load WP Media Styles inline', 'sv100_companion' ) )
+				 ->set_description( __( 'To optimize your Pagespeed Score, you may need to load WP Media Styles inline if loaded. Activate this, if Pagespeed Test Tool says external WP Media Styles are renderblocking.', 'sv100_companion' ) )
 				 ->load_type( 'checkbox' );
 		
 		$this->s['alt_attr'] =
 			$this->get_setting()
 				 ->set_ID( 'alt_attr' )
-				 ->set_title( __( 'Add alt-attributes to images if missing', 'sv100' ) )
-				 ->set_description( __( 'No image should be without alt-attribute, so if there are some without one, an empty one will be added.', 'sv100' ) )
+				 ->set_title( __( 'Add alt-attributes to images if missing', 'sv100_companion' ) )
+				 ->set_description( __( 'No image should be without alt-attribute, so if there are some without one, an empty one will be added.', 'sv100_companion' ) )
 				 ->load_type( 'checkbox' );
 		
 		$this->s['type_attr'] =
 			$this->get_setting()
 				 ->set_ID( 'type_attr' )
-				 ->set_title( __( 'Remove type-attributes from style and script tags', 'sv100' ) )
-				 ->set_description( __( 'These are not needed for standard purposes anymore, W3C recommends to remove them if not needed. You will reduce your pageload as well.', 'sv100' ) )
+				 ->set_title( __( 'Remove type-attributes from style and script tags', 'sv100_companion' ) )
+				 ->set_description( __( 'These are not needed for standard purposes anymore, W3C recommends to remove them if not needed. You will reduce your pageload as well.', 'sv100_companion' ) )
 				 ->load_type( 'checkbox' );
 		
 		return $this;
