@@ -1,5 +1,5 @@
 <?php
-namespace sv100;
+namespace sv100_companion;
 
 /**
  * @version         1.00
@@ -13,10 +13,6 @@ namespace sv100;
 
 class sv_cleanup extends init {
 	public function init() {
-		// Module Info
-		$this->set_module_title( 'SV Cleanup' );
-		$this->set_module_desc( __( 'Improve some WordPress Standards', 'sv100' ) );
-		
 		// Section Info
 		$this->set_section_title( __( 'Cleanup', 'sv100' ) )
 			 ->set_section_desc( __( 'Improve some WordPress Standards', 'sv100' ) )
