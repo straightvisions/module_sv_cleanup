@@ -15,8 +15,9 @@ class sv_cleanup extends modules {
 	public function init() {
 		// Section Info
 		$this->set_section_title( __( 'Cleanup', 'sv100_companion' ) )
-			 ->set_section_desc( __( 'Improve some WordPress Standards', 'sv100_companion' ) )
-			 ->set_section_type( 'settings' );
+			->set_section_desc( __( 'Improve some WordPress Standards', 'sv100_companion' ) )
+			->set_section_type( 'settings' )
+			->set_section_template_path( $this->get_path( 'lib/modules/sv_cleanup/lib/backend/tpl/settings.php' ) );
 		
 		$this->get_root()->add_section($this);
 		
