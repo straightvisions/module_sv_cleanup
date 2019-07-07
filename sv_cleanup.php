@@ -37,7 +37,7 @@ class sv_cleanup extends init {
 		}
 		if($this->s['wp_media']->run_type()->get_data()){
 			add_action('wp_print_styles', array($this, 'wp_print_styles'), 100);
-			add_action('wp_print_footer_scripts', array($this, 'wp_print_styles'), 1);
+			add_action('wp_print_footer_scripts', array($this, 'wp_print_footer_scripts'), 1);
 		}
 
 		// Action Hooks
@@ -161,17 +161,20 @@ class sv_cleanup extends init {
 	public function wp_print_styles(){
 		if(wp_style_is('wp-mediaelement')){
 			wp_dequeue_style('wp-mediaelement');
-			
-			add_action('wp_enqueue_style', function(){
-				ob_start();
-				include(ABSPATH.WPINC.'/js/mediaelement/mediaelementplayer-legacy.min.css');
-				include(ABSPATH.WPINC.'/js/mediaelement/wp-mediaelement.min.css');
-				$css					= ob_get_contents();
-				ob_end_clean();
-				$css =  str_replace('mejs-controls.svg',includes_url('js/mediaelement/mejs-controls.svg'), $css);
-				
-				wp_add_inline_style($this->get_module('sv_common')->get_scripts()['frontend']->get_handle(), $css);
-			});
 		}
+	}
+	public function wp_print_footer_scripts(){
+		if(wp_style_is('wp-mediaelement')){
+			wp_dequeue_style('wp-mediaelement');
+		}
+
+		ob_start();
+		include(ABSPATH.WPINC.'/js/mediaelement/mediaelementplayer-legacy.min.css');
+		include(ABSPATH.WPINC.'/js/mediaelement/wp-mediaelement.min.css');
+		$css					= ob_get_contents();
+		ob_end_clean();
+		$css =  str_replace('mejs-controls.svg',includes_url('js/mediaelement/mejs-controls.svg'), $css);
+
+		echo '<style>'.$css.'</style>';
 	}
 }
