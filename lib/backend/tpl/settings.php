@@ -3,7 +3,7 @@
 		?>
 		<div class="sv_section_description"><?php echo $module->get_section_desc(); ?></div>
 		
-		<h3 class="divider"><?php _e( 'Decrease PageLoad', 'sv100' ); ?></h3>
+		<h3 class="divider"><?php _e( 'Decrease PageLoad', 'sv100_companion' ); ?></h3>
 		<div class="sv_setting_flex">
 			<?php
 				echo $module->get_settings()['jquery_migrate']->run_type()->form();
@@ -12,14 +12,14 @@
 			?>
 		</div>
 		
-		<h3 class="divider"><?php _e( 'Improve Scriptloading', 'sv100' ); ?></h3>
+		<h3 class="divider"><?php _e( 'Improve Scriptloading', 'sv100_companion' ); ?></h3>
 		<div class="sv_setting_flex">
 			<?php
 				echo $module->get_settings()['wp_media']->run_type()->form();
 			?>
 		</div>
 		
-		<h3 class="divider"><?php _e( 'Optimize W3C Validation', 'sv100' ); ?></h3>
+		<h3 class="divider"><?php _e( 'Optimize W3C Validation', 'sv100_companion' ); ?></h3>
 		<div class="sv_setting_flex">
 			<?php
 				echo $module->get_settings()['alt_attr']->run_type()->form();
