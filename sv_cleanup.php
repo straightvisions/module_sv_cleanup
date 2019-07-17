@@ -23,17 +23,17 @@ class sv_cleanup extends modules {
 		
 		$this->load_settings();
 		
-		if($this->s['jquery_migrate']->run_type()->get_data()){
+		if($this->get_setting('jquery_migrate')->run_type()->get_data()){
 			add_action( 'wp_default_scripts', array($this, 'jquery_migrate') );
 		}
-		if($this->s['meta_data']->run_type()->get_data()){
+		if($this->get_setting('meta_data')->run_type()->get_data()){
 			$this->meta_data();
 		}
-		if($this->s['emoji_styles']->run_type()->get_data()){
+		if($this->get_setting('emoji_styles')->run_type()->get_data()){
 			remove_action('wp_print_styles', 'print_emoji_styles'); // remove emoji
 		}
-		if($this->s['wp_media']->run_type()->get_data()){
-			add_action('wp_print_styles', array($this, 'wp_print_styles'), 100);
+		if($this->get_setting('wp_media')->run_type()->get_data()){
+			//add_action('wp_print_styles', array($this, 'wp_print_styles'), 100);
 			add_action('wp_print_footer_scripts', array($this, 'wp_print_styles'), 1);
 		}
 
@@ -62,51 +62,37 @@ class sv_cleanup extends modules {
 		remove_action('wp_head', 'wp_generator');
 	}
 	public function load_settings(): sv_cleanup {
-		$this->s['jquery_migrate'] =
-			$this->get_setting()
-				 ->set_ID( 'jquery_migrate' )
+			$this->get_setting('jquery_migrate')
 				 ->set_title( __( 'Disable jQuery Migrate', 'sv100_companion' ) )
 				 ->set_description( __( 'In most cases, you will not need jQuery-Migrate. Disabling this script will reduce pageload and improve Pagespeed. Check for Javascript-Errors in Frontend after activating this.', 'sv100_companion' ) )
 				 ->load_type( 'checkbox' );
-		
-		$this->s['meta_data'] =
-			$this->get_setting()
-				 ->set_ID( 'meta_data' )
+			
+			$this->get_setting('meta_data')
 				 ->set_title( __( 'Remove non-critical meta data', 'sv100_companion' ) )
 				 ->set_description( __( 'Removes some lines of HTML-Meta-Data which are not critical for your site, but saves some byte of code in the frontend: rest_output_link_wp_head, wp_oembed_add_discovery_links, rsd_link, wlwmanifest_link, wp_shortlink_wp_head, wp_generator', 'sv100_companion' ) )
 				 ->load_type( 'checkbox' );
-		
-		$this->s['emoji_styles'] =
-			$this->get_setting()
-				 ->set_ID( 'emoji_styles' )
+			
+			$this->get_setting('emoji_styles')
 				 ->set_title( __( 'Removes Emoji Styles', 'sv100_companion' ) )
 				 ->set_description( __( 'Instead of loading those styles from WP, default browser emojis will be displayed', 'sv100_companion' ) )
 				 ->load_type( 'checkbox' );
-		
-		$this->s['wp_media'] =
-			$this->get_setting()
-				 ->set_ID( 'wp_media' )
+			
+			$this->get_setting('wp_media')
 				 ->set_title( __( 'Load WP Media Styles inline', 'sv100_companion' ) )
 				 ->set_description( __( 'To optimize your Pagespeed Score, you may need to load WP Media Styles inline if loaded. Activate this, if Pagespeed Test Tool says external WP Media Styles are renderblocking.', 'sv100_companion' ) )
 				 ->load_type( 'checkbox' );
-		
-		$this->s['wp_media'] =
-			$this->get_setting()
-				 ->set_ID( 'wp_media' )
+			
+			$this->get_setting('wp_media')
 				 ->set_title( __( 'Load WP Media Styles inline', 'sv100_companion' ) )
 				 ->set_description( __( 'To optimize your Pagespeed Score, you may need to load WP Media Styles inline if loaded. Activate this, if Pagespeed Test Tool says external WP Media Styles are renderblocking.', 'sv100_companion' ) )
 				 ->load_type( 'checkbox' );
-		
-		$this->s['alt_attr'] =
-			$this->get_setting()
-				 ->set_ID( 'alt_attr' )
+			
+			$this->get_setting('alt_attr')
 				 ->set_title( __( 'Add alt-attributes to images if missing', 'sv100_companion' ) )
 				 ->set_description( __( 'No image should be without alt-attribute, so if there are some without one, an empty one will be added.', 'sv100_companion' ) )
 				 ->load_type( 'checkbox' );
-		
-		$this->s['type_attr'] =
-			$this->get_setting()
-				 ->set_ID( 'type_attr' )
+			
+			$this->get_setting('type_attr')
 				 ->set_title( __( 'Remove type-attributes from style and script tags', 'sv100_companion' ) )
 				 ->set_description( __( 'These are not needed for standard purposes anymore, W3C recommends to remove them if not needed. You will reduce your pageload as well.', 'sv100_companion' ) )
 				 ->load_type( 'checkbox' );
@@ -119,11 +105,11 @@ class sv_cleanup extends modules {
 	public function wp_end(){
 		$output				= ob_get_contents();
 		
-		if($this->s['alt_attr']->run_type()->get_data()) {
+		if($this->get_setting('alt_attr')->run_type()->get_data()) {
 			$output			= $this->add_alt_tags( $output );
 		}
 		
-		if($this->s['type_attr']->run_type()->get_data()) {
+		if($this->get_setting('type_attr')->run_type()->get_data()) {
 			$output			= $this->remove_type_attr($output);
 		}
 		
@@ -159,16 +145,14 @@ class sv_cleanup extends modules {
 		if(wp_style_is('wp-mediaelement')){
 			wp_dequeue_style('wp-mediaelement');
 			
-			add_action('wp_enqueue_style', function(){
-				ob_start();
-				include(ABSPATH.WPINC.'/js/mediaelement/mediaelementplayer-legacy.min.css');
-				include(ABSPATH.WPINC.'/js/mediaelement/wp-mediaelement.min.css');
-				$css					= ob_get_contents();
-				ob_end_clean();
-				$css =  str_replace('mejs-controls.svg',includes_url('js/mediaelement/mejs-controls.svg'), $css);
-				
-				wp_add_inline_style($this->get_module('sv_common')->get_scripts()['frontend']->get_handle(), $css);
-			});
+			ob_start();
+			include(ABSPATH.WPINC.'/js/mediaelement/mediaelementplayer-legacy.min.css');
+			include(ABSPATH.WPINC.'/js/mediaelement/wp-mediaelement.min.css');
+			$css					= ob_get_contents();
+			ob_end_clean();
+			$css =  str_replace('mejs-controls.svg',includes_url('js/mediaelement/mejs-controls.svg'), $css);
+			
+			wp_add_inline_style('sv_core_init_style', $css);
 		}
 	}
 }
