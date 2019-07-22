@@ -16,6 +16,7 @@
 		<div class="sv_setting_flex">
 			<?php
 				echo $module->get_settings()['wp_media']->run_type()->form();
+			echo $module->get_settings()['css_lazyload']->run_type()->form();
 			?>
 		</div>
 		

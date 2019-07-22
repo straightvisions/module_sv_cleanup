@@ -37,6 +37,12 @@ class sv_cleanup extends modules {
 			add_action('wp_print_footer_scripts', array($this, 'wp_print_styles'), 1);
 		}
 
+		if($this->get_setting('css_lazyload')->run_type()->get_data()){
+			add_filter('style_loader_tag', array($this,'css_lazyload'));
+			add_filter('rocket_buffer', array($this,'css_lazyload'), 999999);
+
+		}
+
 		// Action Hooks
 		add_action('wp_head', array($this, 'wp_start'), 1);
 		add_action('wp_footer', array($this, 'wp_end'), 9999999);
@@ -44,6 +50,19 @@ class sv_cleanup extends modules {
 		// lazy load attached CSS
 		// @todo: make this an option
 		//add_filter('rocket_buffer', function($buffer){ return str_replace('rel="stylesheet"', 'rel="stylesheet" media="none" onload="if(media!=\'all\')media=\'all\'"', $buffer); }, 999999);
+	}
+	public function css_lazyload($buffer){
+		return str_replace( 		array(
+			'media="all"',
+			'media=\'all\'',
+			'rel="stylesheet"',
+			'rel=\'stylesheet\''
+		), array(
+			'',
+			'',
+			'rel="stylesheet" media="none" onload="if(media!=\'all\')media=\'all\'"',
+			'rel="stylesheet" media="none" onload="if(media!=\'all\')media=\'all\'"',
+		), $buffer);
 	}
 	public function jquery_migrate($scripts){
 		if ( ! is_admin() && ! empty( $scripts->registered['jquery'] ) ) {
@@ -82,11 +101,14 @@ class sv_cleanup extends modules {
 				 ->set_description( __( 'To optimize your Pagespeed Score, you may need to load WP Media Styles inline if loaded. Activate this, if Pagespeed Test Tool says external WP Media Styles are renderblocking.', 'sv100_companion' ) )
 				 ->load_type( 'checkbox' );
 			
-			$this->get_setting('wp_media')
-				 ->set_title( __( 'Load WP Media Styles inline', 'sv100_companion' ) )
-				 ->set_description( __( 'To optimize your Pagespeed Score, you may need to load WP Media Styles inline if loaded. Activate this, if Pagespeed Test Tool says external WP Media Styles are renderblocking.', 'sv100_companion' ) )
+			$this->get_setting('css_lazyload')
+				 ->set_title( __( 'Lazyload attached CSS files', 'sv100_companion' ) )
+				 ->set_description( sprintf(__( 'Attached CSS should be lazyloaded. Even with WP-Rocket this is not solved completely %1$s(see issue)%2$s', 'sv100_companion' ),
+					 '<a target="_blank" href="' . esc_url( 'https://github.com/wp-media/wp-rocket/issues/1814' ) . '">',
+					 '</a>'
+				 ) )
 				 ->load_type( 'checkbox' );
-			
+
 			$this->get_setting('alt_attr')
 				 ->set_title( __( 'Add alt-attributes to images if missing', 'sv100_companion' ) )
 				 ->set_description( __( 'No image should be without alt-attribute, so if there are some without one, an empty one will be added.', 'sv100_companion' ) )
