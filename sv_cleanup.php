@@ -46,10 +46,6 @@ class sv_cleanup extends modules {
 		// Action Hooks
 		add_action('wp_head', array($this, 'wp_start'), 1);
 		add_action('wp_footer', array($this, 'wp_end'), 9999999);
-		
-		// lazy load attached CSS
-		// @todo: make this an option
-		//add_filter('rocket_buffer', function($buffer){ return str_replace('rel="stylesheet"', 'rel="stylesheet" media="none" onload="if(media!=\'all\')media=\'all\'"', $buffer); }, 999999);
 	}
 	public function css_lazyload($buffer){
 		return str_replace( 		array(
