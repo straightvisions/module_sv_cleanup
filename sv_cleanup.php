@@ -38,9 +38,10 @@ class sv_cleanup extends modules {
 		}
 
 		if($this->get_setting('css_lazyload')->run_type()->get_data()){
-			add_filter('style_loader_tag', array($this,'css_lazyload'));
+			if(!defined('WP_ROCKET_PATH')) {
+				add_filter('style_loader_tag', array($this, 'css_lazyload'));
+			}
 			add_filter('rocket_buffer', array($this,'css_lazyload'), 999999);
-
 		}
 
 		// Action Hooks
