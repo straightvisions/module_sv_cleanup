@@ -38,15 +38,17 @@ class sv_cleanup extends modules {
 		}
 
 		if($this->get_setting('css_lazyload')->run_type()->get_data()){
-			if(!defined('WP_ROCKET_PATH')) {
-				add_filter('style_loader_tag', array($this, 'css_lazyload'));
-			}
-			add_filter('rocket_buffer', array($this,'css_lazyload'), 999999);
+			add_action('init', array($this, 'wp_init'));
 		}
 
 		// Action Hooks
 		add_action('wp_head', array($this, 'wp_start'), 1);
 		add_action('wp_footer', array($this, 'wp_end'), 9999999);
+	}
+	public function wp_init(){
+		if(!defined('WP_ROCKET_PATH')) {
+			add_filter('style_loader_tag', array($this, 'css_lazyload'));
+		}
 	}
 	public function css_lazyload($buffer){
 		return str_replace( 		array(
