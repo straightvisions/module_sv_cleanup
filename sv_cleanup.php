@@ -139,11 +139,11 @@ class sv_cleanup extends modules {
 		ob_start();
 	}
 	public function remove_type_attr($input){
-		$input = str_replace("type='text/javascript'", '', $input);
-		$input = str_replace('type="text/javascript"', '', $input);
+		$input = str_replace(" type='text/javascript'", '', $input);
+		$input = str_replace(' type="text/javascript"', '', $input);
 
-		$input = str_replace("type='text/css'", '', $input);
-		$input = str_replace('type="text/css"', '', $input);
+		$input = str_replace(" type='text/css'", '', $input);
+		$input = str_replace(' type="text/css"', '', $input);
 
 		return $input;
 	}
