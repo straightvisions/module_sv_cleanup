@@ -23,21 +23,21 @@ class sv_cleanup extends modules {
 		
 		$this->load_settings();
 		
-		if($this->get_setting('jquery_migrate')->run_type()->get_data()){
+		if($this->get_setting('jquery_migrate')->get_data()){
 			add_action( 'wp_default_scripts', array($this, 'jquery_migrate') );
 		}
-		if($this->get_setting('meta_data')->run_type()->get_data()){
+		if($this->get_setting('meta_data')->get_data()){
 			$this->meta_data();
 		}
-		if($this->get_setting('emoji_styles')->run_type()->get_data()){
+		if($this->get_setting('emoji_styles')->get_data()){
 			remove_action('wp_print_styles', 'print_emoji_styles'); // remove emoji
 		}
-		if($this->get_setting('wp_media')->run_type()->get_data()){
+		if($this->get_setting('wp_media')->get_data()){
 			//add_action('wp_print_styles', array($this, 'wp_print_styles'), 100);
 			add_action('wp_print_footer_scripts', array($this, 'wp_print_styles'), 1);
 		}
 
-		if($this->get_setting('css_lazyload')->run_type()->get_data()){
+		if($this->get_setting('css_lazyload')->get_data()){
 			add_action('init', array($this, 'wp_init'));
 		}
 
@@ -126,11 +126,11 @@ class sv_cleanup extends modules {
 	public function wp_end(){
 		$output				= ob_get_contents();
 		
-		if($this->get_setting('alt_attr')->run_type()->get_data()) {
+		if($this->get_setting('alt_attr')->get_data()) {
 			$output			= $this->add_alt_tags( $output );
 		}
 		
-		if($this->get_setting('type_attr')->run_type()->get_data()) {
+		if($this->get_setting('type_attr')->get_data()) {
 			$output			= $this->remove_type_attr($output);
 		}
 		
