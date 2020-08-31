@@ -41,6 +41,30 @@ class sv_cleanup extends modules {
 			add_action('init', array($this, 'wp_init'));
 		}
 
+		if($this->get_setting('prevent_fouc')->get_data() && !is_admin()){
+			add_filter( 'body_class', function($classes){
+				$classes[] = $this->get_root()->get_prefix('fouc');
+				return $classes;
+			} );
+
+			add_action('wp_head', function(){
+				?>
+				<style type="text/css">
+					body.sv100_companion_fouc {
+						visibility: hidden !important;
+						display:none !important;
+						opacity:0 !important;
+					}
+				</style>
+				<?php
+			});
+
+			$this->get_script( 'prevent_fouc_js' )
+				->set_type('js')
+				->set_path( 'lib/frontend/js/prevent_fouc.js' )
+				->set_is_enqueued();
+		}
+
 		// Action Hooks
 		add_action('wp_head', array($this, 'wp_start'), 1);
 		add_action('wp_footer', array($this, 'wp_end'), 9999999);
@@ -107,6 +131,11 @@ class sv_cleanup extends modules {
 					 '</a>'
 				 ) )
 				 ->load_type( 'checkbox' );
+
+			$this->get_setting('prevent_fouc')
+				->set_title( __( 'Prevent FOUC', 'sv100_companion' ) )
+				->set_description( __( 'Content will be hidden until DOM is ready to prevent flash of unstyled content (FOUC). If there is any javascript-error on your site, this could prevent content to be shown to your visitors. Using this Anti-FOUC-Feature should be avoided by reducing pagesize and optimizing CSS delivery.', 'sv100_companion' ) )
+				->load_type( 'checkbox' );
 
 			$this->get_setting('alt_attr')
 				 ->set_title( __( 'Add alt-attributes to images if missing', 'sv100_companion' ) )
