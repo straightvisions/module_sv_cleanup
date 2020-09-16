@@ -30,7 +30,13 @@ class sv_cleanup extends modules {
 			$this->meta_data();
 		}
 		if($this->get_setting('emoji_styles')->get_data()){
-			remove_action('wp_print_styles', 'print_emoji_styles'); // remove emoji
+			remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+			remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+			remove_action( 'wp_print_styles', 'print_emoji_styles' );
+			remove_action( 'admin_print_styles', 'print_emoji_styles' );
+			remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+			remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+			remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
 		}
 		if($this->get_setting('wp_media')->get_data()){
 			//add_action('wp_print_styles', array($this, 'wp_print_styles'), 100);
@@ -63,6 +69,12 @@ class sv_cleanup extends modules {
 				->set_type('js')
 				->set_path( 'lib/frontend/js/prevent_fouc.js' )
 				->set_is_enqueued();
+		}
+
+		if($this->get_setting('wp_embed')->get_data()){
+			add_action( 'wp_footer', function(){
+				wp_dequeue_script( 'wp-embed' );
+			} );
 		}
 
 		// Action Hooks
@@ -146,6 +158,11 @@ class sv_cleanup extends modules {
 				 ->set_title( __( 'Remove type-attributes from style and script tags', 'sv100_companion' ) )
 				 ->set_description( __( 'These are not needed for standard purposes anymore, W3C recommends to remove them if not needed. You will reduce your pageload as well.', 'sv100_companion' ) )
 				 ->load_type( 'checkbox' );
+
+		$this->get_setting('wp_embed')
+			->set_title( __( 'Disable WP Embed', 'sv100_companion' ) )
+			->set_description( __( 'For PageSpeed or GDPR Purposes you may want to disable WP Embed feature.', 'sv100_companion' ) )
+			->load_type( 'checkbox' );
 		
 		return $this;
 	}
