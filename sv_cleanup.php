@@ -68,6 +68,7 @@ class sv_cleanup extends modules {
 			$this->get_script( 'prevent_fouc_js' )
 				->set_type('js')
 				->set_path( 'lib/frontend/js/prevent_fouc.js' )
+				->set_deps(array('jquery'))
 				->set_is_enqueued();
 		}
 
