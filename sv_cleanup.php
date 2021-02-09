@@ -182,10 +182,8 @@ class sv_cleanup extends modules {
 		if($this->get_setting('type_attr')->get_data()) {
 			$output			= $this->remove_type_attr($output);
 		}
-		
-		ob_end_clean();
+
 		echo $output;
-		ob_start();
 	}
 	public function remove_type_attr($input){
 		$input = str_replace(" type='text/javascript'", '', $input);
