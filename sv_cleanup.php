@@ -48,6 +48,13 @@ class sv_cleanup extends modules {
 		}
 
 		if($this->get_setting('prevent_fouc')->get_data() && !is_admin()){
+
+			add_filter( 'rocket_delay_js_exclusions', function ( $excluded_files = array() ) {
+				$excluded_files[] = '/prevent_fouc.js';
+
+				return $excluded_files;
+			} );
+
 			add_filter( 'body_class', function($classes){
 				$classes[] = $this->get_root()->get_prefix('fouc');
 				return $classes;
