@@ -64,7 +64,7 @@ class sv_cleanup extends modules {
 				?>
 				<style type="text/css">
 					body.sv100_companion_fouc {
-						visibility: hidden !important;
+						content-visibility: hidden;
 						opacity:0 !important;
 					}
 				</style>
