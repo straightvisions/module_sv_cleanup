@@ -52,9 +52,8 @@ class sv_cleanup extends modules {
 
 			add_action('wp_head', function(){
 				?>
-				<style type="text/css">
+				<style>
 					body.sv100_companion_fouc {
-						content-visibility: hidden;
 						opacity:0 !important;
 					}
 				</style>
