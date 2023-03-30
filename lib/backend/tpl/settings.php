@@ -31,6 +31,7 @@
 			<?php
 				echo $module->get_setting('alt_attr')->form();
 				echo $module->get_setting('type_attr')->form();
+				echo $module->get_setting('add_missing_height')->form();
 			?>
 		</div>
 		<?php

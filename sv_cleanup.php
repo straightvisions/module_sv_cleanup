@@ -115,6 +115,10 @@ class sv_cleanup extends modules {
 			->set_description( __( 'No image should be without alt-attribute, so if there are some without one, an empty one will be added.', 'sv100_companion' ) )
 			->load_type( 'checkbox' );
 
+		$this->get_setting('add_missing_height')
+		     ->set_title( __( 'Add height-attribute to images if missing', 'sv100_companion' ) )
+		     ->load_type( 'checkbox' );
+
 		$this->get_setting('type_attr')
 			->set_title( __( 'Remove type-attributes from style and script tags', 'sv100_companion' ) )
 			->set_description( __( 'These are not needed for standard purposes anymore, W3C recommends to remove them if not needed. You will reduce your pageload as well.', 'sv100_companion' ) )
@@ -172,6 +176,10 @@ class sv_cleanup extends modules {
 		if($this->get_setting('alt_attr')->get_data()) {
 			$output			= $this->add_alt_tags( $output );
 		}
+
+		if($this->get_setting('add_missing_height')->get_data()) {
+			$output			= $this->add_missing_height( $output );
+		}
 		
 		if($this->get_setting('type_attr')->get_data()) {
 			$output			= $this->remove_type_attr($output);
@@ -189,14 +197,31 @@ class sv_cleanup extends modules {
 		return $input;
 	}
 	public function add_alt_tags($content){
-		preg_match_all('/<img (.*?)\/>/', $content, $images);
-		if(!is_null($images))
-		{
-			foreach($images[1] as $index => $value)
-			{
+		preg_match_all('/<img (.*?)>/', $content, $images);
+		if(!is_null($images)) {
+			foreach($images[1] as $index => $value) {
 				if(!preg_match('/alt=/', $value))
 				{
 					$new_img = str_replace('<img', '<img alt=""', $images[0][$index]);
+					$content = str_replace($images[0][$index], $new_img, $content);
+				}
+			}
+		}
+		return $content;
+	}
+	public function add_missing_height($content){
+		preg_match_all('/<img (.*?)>/', $content, $images);
+		if(!is_null($images)) {
+			foreach($images[1] as $index => $value) {
+				if(!preg_match('/height=/', $value)) {
+					$height	= 0;
+
+					// set height to width
+					if(preg_match('/width="(.*?)"/', $value, $width)){
+						$height	= $width[1];
+					}
+
+					$new_img = str_replace('<img', '<img height="'.$height.'" style="height:auto;"', $images[0][$index]);
 					$content = str_replace($images[0][$index], $new_img, $content);
 				}
 			}
