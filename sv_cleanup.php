@@ -74,7 +74,8 @@ class sv_cleanup extends modules {
 
 		// Action Hooks
 		add_action('wp_head', array($this, 'wp_start'), 1);
-		add_action('wp_footer', array($this, 'wp_end'), 9999999);
+		add_action('wp_footer', array($this, 'wp_end'), 1);
+		add_action('wp_footer', array($this, 'wp_end_late'), 9999999);
 	}
 	public function load_settings(): sv_cleanup {
 		$this->get_setting('jquery_migrate')
@@ -181,6 +182,17 @@ class sv_cleanup extends modules {
 			$output			= $this->add_missing_height( $output );
 		}
 		
+		if($this->get_setting('type_attr')->get_data()) {
+			$output			= $this->remove_type_attr($output);
+		}
+
+		echo $output;
+		ob_start();
+	}
+	public function wp_end_late(){
+		$output				= ob_get_contents();
+		ob_end_clean();
+
 		if($this->get_setting('type_attr')->get_data()) {
 			$output			= $this->remove_type_attr($output);
 		}
