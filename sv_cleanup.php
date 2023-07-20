@@ -133,7 +133,7 @@ class sv_cleanup extends modules {
 		return $this;
 	}
 	public function wp_init(){
-		if(!defined('WP_ROCKET_PATH')) {
+		if(!is_admin() && !defined('WP_ROCKET_PATH')) {
 			add_filter('style_loader_tag', array($this, 'css_lazyload'));
 		}else{
 			add_filter('rocket_buffer', array($this, 'css_lazyload'), 999999);
